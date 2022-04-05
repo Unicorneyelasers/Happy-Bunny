@@ -8,12 +8,19 @@ public class LightChange : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+       // bunLight.intensity = 5;
     }
-
+    
     // Update is called once per frame
     void Update()
     {
-        bunLight.intensity = Mathf.PingPong(Time.time, 8);
+        //bunLight.intensity = Mathf.PingPong(Time.time, 8);
+
     }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+       // bunLight.intensity = bunLight.intensity - 1; 
+    }
+
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class PlayerContoller : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class PlayerContoller : MonoBehaviour
     private float groundCheckRadius = 0.03f;
 
     private bool facingLeft = false;
+
+    [SerializeField] Light2D bunLight;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +28,8 @@ public class PlayerContoller : MonoBehaviour
        
         rbody.gravityScale = gravity / Physics2D.gravity.y;
         initialJumpVelocity = Mathf.Sqrt(jumpHeight * -2 * gravity);
+
+        bunLight.intensity = 3;
     }
     void Jump()
     {
@@ -50,6 +55,24 @@ public class PlayerContoller : MonoBehaviour
             Flip();
         }
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        bunLight.intensity = bunLight.intensity - 1;
+        Debug.Log("We triggered");
+    }
+    //void OnCollisonEnter2D(Collision2D other)
+    //{
+    //    Debug.Log("sometime collided");
+    //    if (other.gameObject.tag == "huggy")
+    //    {
+    //        bunLight.intensity = bunLight.intensity - 0.3f;
+    //    }
+
+    //}
+    //void OnCollisonExit2D(Collision2D other)
+    //{
+
+    //}
     void Flip()
     {
         // flip the direction the player is facing

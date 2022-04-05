@@ -30,14 +30,18 @@ public class FairyMovement : MonoBehaviour
 
             dir.z = 0;
             dir.Normalize();
+            transform.Rotate(Vector3.up, 180);
             play = false;
         }
         Vector3 target = dir * moveSpeed + currentPos;  //calculating target position
+       // Debug.Log("this is x > " + dir.x);
+        //Debug.Log("this is y > " + dir.y);
         transform.position = Vector3.Lerp(currentPos, target, Time.deltaTime);//movement from current position to target position
         targetAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90; //angle of rotation of gameobject
+       // transform.Rotate(Vector3.up, 180); //THIS makes him flip around fast. kinda creepy. Might keep
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, targetAngle), turnSpeed * Time.deltaTime); //rotation from current direction to target direction
     }
-    void OnCollisionEnter2D()
+   private void OnCollisionEnter2D()
     {
 
         CancelInvoke();//stop call to start1 method
@@ -45,8 +49,14 @@ public class FairyMovement : MonoBehaviour
         play = true;
 
     }
-    void OnCollisionExit2D()
+    private void OnCollisionExit2D()
     {
         InvokeRepeating("Start1", 2f, 5f);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("something triggered");
+    }
+
 }
