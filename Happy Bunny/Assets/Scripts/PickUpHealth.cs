@@ -25,6 +25,7 @@ public class PickUpHealth : MonoBehaviour
             if (player.maxLight < 1)
             {
                 player.IncreasePlayerLight();
+                Destroy(this.gameObject);
                 
             }
             
