@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    private int numOfHuggies = 1;
+    private int numOfHuggies = 2;
     private GameObject[] bundleOfHuggies;
     [SerializeField] private GameObject huggyPrefab;
     private GameObject huggy;

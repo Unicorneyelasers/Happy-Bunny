@@ -18,8 +18,12 @@ public class PlayerContoller : MonoBehaviour
     private float groundCheckRadius = 0.03f;
 
     private bool facingLeft = false;
-
+    private Vector3 respawnPt; 
     [SerializeField] Light2D bunLight;
+
+    public float maxLight = 1f;
+
+    private float lightAmount = 0.3f;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,8 +32,8 @@ public class PlayerContoller : MonoBehaviour
        
         rbody.gravityScale = gravity / Physics2D.gravity.y;
         initialJumpVelocity = Mathf.Sqrt(jumpHeight * -2 * gravity);
-
-        bunLight.intensity = 3;
+        respawnPt = transform.position;
+        bunLight.intensity = maxLight;
     }
     void Jump()
     {
@@ -55,24 +59,23 @@ public class PlayerContoller : MonoBehaviour
             Flip();
         }
     }
-    private void OnTriggerEnter(Collider other)
+    public void Respawn()
     {
-        bunLight.intensity = bunLight.intensity - 1;
-        Debug.Log("We triggered");
+        transform.position = respawnPt;
     }
-    //void OnCollisonEnter2D(Collision2D other)
-    //{
-    //    Debug.Log("sometime collided");
-    //    if (other.gameObject.tag == "huggy")
-    //    {
-    //        bunLight.intensity = bunLight.intensity - 0.3f;
-    //    }
-
-    //}
-    //void OnCollisonExit2D(Collision2D other)
-    //{
-
-    //}
+   
+    public void DimPlayerLight()
+    {
+        
+        bunLight.intensity = bunLight.intensity - lightAmount;
+        maxLight = maxLight - lightAmount;
+       
+    }
+   public void IncreasePlayerLight()
+    {
+        bunLight.intensity = bunLight.intensity + lightAmount;
+        maxLight = maxLight + lightAmount;
+    }
     void Flip()
     {
         // flip the direction the player is facing
@@ -87,5 +90,11 @@ public class PlayerContoller : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawSphere(groundCheckPoint.position, groundCheckRadius);
+    }
+    private void OnParticleCollision(GameObject other)
+    {
+        // Debug.Log("this is other > "  + other + " and this is gameobject this >" + this);
+        DimPlayerLight();
+
     }
 }
