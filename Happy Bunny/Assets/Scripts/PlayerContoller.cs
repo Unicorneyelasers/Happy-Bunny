@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
+using UnityEngine.UI;
 
 public class PlayerContoller : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class PlayerContoller : MonoBehaviour
     [SerializeField] private Transform groundCheckPoint;
     [SerializeField] private LayerMask groundLayerMask;
     private float groundCheckRadius = 0.03f;
+   [SerializeField] private Canvas gameOver;
 
     private bool facingLeft = false;
     private Vector3 respawnPt; 
@@ -23,7 +25,7 @@ public class PlayerContoller : MonoBehaviour
 
     public float maxLight = 1f;
 
-    private float lightAmount = 0.3f;
+    private float lightAmount = 0.25f;
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +49,17 @@ public class PlayerContoller : MonoBehaviour
         {
             Jump();
         }
+        bool hasLight = (maxLight > 0);
+        anim.SetBool("hasLight", hasLight);
+        if ((!hasLight) && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
+        {
+            // StartCoroutine(waitForAnimation(1, gameOver));
+            Time.timeScale = 0;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            gameOver.gameObject.SetActive(true);
+
+        }
         horizInput = Input.GetAxis("Horizontal"); 
         bool isRunning = horizInput > 0.01 || horizInput < -0.01;
         anim.SetBool("isRunning", isRunning);
@@ -63,18 +76,22 @@ public class PlayerContoller : MonoBehaviour
     {
         transform.position = respawnPt;
     }
-   
+   private void UpdateMaxHealth()
+    {
+        maxLight = bunLight.intensity;
+    }
     public void DimPlayerLight()
     {
-        
+        Debug.Log(maxLight);
+        Debug.Log(bunLight.intensity);
         bunLight.intensity = bunLight.intensity - lightAmount;
-        maxLight = maxLight - lightAmount;
+        UpdateMaxHealth();
        
     }
    public void IncreasePlayerLight()
     {
         bunLight.intensity = bunLight.intensity + lightAmount;
-        maxLight = maxLight + lightAmount;
+        UpdateMaxHealth();
     }
     void Flip()
     {
@@ -96,5 +113,10 @@ public class PlayerContoller : MonoBehaviour
         // Debug.Log("this is other > "  + other + " and this is gameobject this >" + this);
         DimPlayerLight();
 
+    }
+    IEnumerator waitForAnimation(float seconds, Canvas gameOver)
+    {
+        yield return new WaitForSeconds(seconds);
+        gameOver.gameObject.SetActive(true);
     }
 }
