@@ -8,7 +8,32 @@ public class GameController : MonoBehaviour
     private GameObject[] bundleOfHuggies;
     [SerializeField] private GameObject huggyPrefab;
     private GameObject huggy;
+    [SerializeField] UIManager ui; 
     // Start is called before the first frame update
+    private void Awake()
+    {
+        Messenger.AddListener(GameEvent.PLAYER_DEATH, OnPlayerDeath);
+       
+    }
+
+    private void OnDestroy()
+    {
+        Messenger.RemoveListener(GameEvent.PLAYER_DEATH, OnPlayerDeath);
+    }
+
+    void OnPlayerDeath()
+    {
+        Debug.Log("died");
+        ui.ShowGameOverPopUp();
+        PauseGamePlay();
+    }
+   void PauseGamePlay()
+    {
+        Time.timeScale = 0;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+    }
     void Start()
     {
         bundleOfHuggies = new GameObject[numOfHuggies];

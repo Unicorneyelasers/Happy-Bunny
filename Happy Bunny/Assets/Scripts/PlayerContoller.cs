@@ -18,7 +18,7 @@ public class PlayerContoller : MonoBehaviour
     [SerializeField] private LayerMask groundLayerMask;
     private float groundCheckRadius = 0.03f;
    [SerializeField] private Canvas gameOver;
-
+    private bool isAlive = true;
     private bool facingLeft = false;
     private Vector3 respawnPt; 
     [SerializeField] Light2D bunLight;
@@ -42,34 +42,43 @@ public class PlayerContoller : MonoBehaviour
         rbody.velocity = new Vector2(rbody.velocity.x, initialJumpVelocity);
         anim.SetTrigger("jump");
     }
+    void Die()
+    {
+        isAlive = false;
+        Messenger.Broadcast(GameEvent.PLAYER_DEATH);
+    }
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (isAlive)
         {
-            Jump();
-        }
-        bool hasLight = (maxLight > 0);
-        anim.SetBool("hasLight", hasLight);
-        if ((!hasLight) && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
-        {
-            // StartCoroutine(waitForAnimation(1, gameOver));
-            Time.timeScale = 0;
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            gameOver.gameObject.SetActive(true);
 
-        }
-        horizInput = Input.GetAxis("Horizontal"); 
-        bool isRunning = horizInput > 0.01 || horizInput < -0.01;
-        anim.SetBool("isRunning", isRunning);
-        isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayerMask) && rbody.velocity.y < 0.01;
-        anim.SetBool("isGrounded", isGrounded);
+            if (Input.GetButtonDown("Jump") && isGrounded)
+            {
+                Jump();
+            }
 
-        if ((facingLeft && horizInput < -0.01) ||
-          (!facingLeft && horizInput > 0.01))
-        {
-            Flip();
+            bool hasLight = (maxLight > 0);
+            anim.SetBool("hasLight", hasLight);
+            isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayerMask) && rbody.velocity.y < 0.01;
+            horizInput = Input.GetAxis("Horizontal");
+            bool isRunning = horizInput > 0.01 || horizInput < -0.01;
+            anim.SetBool("isRunning", isRunning);
+            isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayerMask) && rbody.velocity.y < 0.01;
+            anim.SetBool("isGrounded", isGrounded);
+            if ((!hasLight) && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && isGrounded && isAlive)
+            {
+
+
+                Die();
+
+            }
+
+            if ((facingLeft && horizInput < -0.01) ||
+              (!facingLeft && horizInput > 0.01))
+            {
+                Flip();
+            }
         }
     }
     public void Respawn()
@@ -116,6 +125,7 @@ public class PlayerContoller : MonoBehaviour
     }
     IEnumerator waitForAnimation(float seconds, Canvas gameOver)
     {
+        Debug.Log("wait for animation");
         yield return new WaitForSeconds(seconds);
         gameOver.gameObject.SetActive(true);
     }
