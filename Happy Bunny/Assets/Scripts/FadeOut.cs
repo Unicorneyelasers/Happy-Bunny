@@ -38,7 +38,7 @@ public class FadeOut : MonoBehaviour
         }
         if (outTime >= 1)
         {
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(2);
         }
 
     }

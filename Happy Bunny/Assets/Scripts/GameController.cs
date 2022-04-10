@@ -22,6 +22,7 @@ public class GameController : MonoBehaviour
     {
         Messenger.AddListener(GameEvent.PLAYER_DEATH, OnPlayerDeath);
         Messenger.AddListener(GameEvent.ENDING_REACHED, OnEndingReached);
+        Messenger.AddListener(GameEvent.START, OnStart);
        
     }
 
@@ -29,13 +30,37 @@ public class GameController : MonoBehaviour
     {
         Messenger.RemoveListener(GameEvent.PLAYER_DEATH, OnPlayerDeath);
         Messenger.RemoveListener(GameEvent.ENDING_REACHED, OnEndingReached);
+        Messenger.RemoveListener(GameEvent.START, OnStart);
     }
 
+    void OnStart()
+    {
+        Debug.Log("Start pushed");
+       // StartCoroutine(Fadeinstart());
+    }
     void OnEndingReached()
     {
         
         Debug.Log("Heard ending reached");
         StartCoroutine(FadeCoroutine());
+    }
+
+    IEnumerator Fadeinstart()
+    {
+        float outTime = 0;
+        while (outTime < 1)
+        {
+            globalLight.intensity = Mathf.Lerp(globalLight.intensity, 0, outTime);
+          //  tunnelLight.intensity = Mathf.Lerp(tunnelLight.intensity, 0, outTime);
+            bunLight.intensity = Mathf.Lerp(bunLight.intensity, 0, outTime);
+            yield return null;
+            outTime += Time.deltaTime / duration;
+            // print(outTime);
+        }
+        if (outTime >= 1)
+        {
+            SceneManager.LoadScene(1);
+        }
     }
     IEnumerator FadeCoroutine()
     {
@@ -51,7 +76,7 @@ public class GameController : MonoBehaviour
         }
         if (outTime >= 1)
         {
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(3);
         }
     }
     void OnPlayerDeath()
