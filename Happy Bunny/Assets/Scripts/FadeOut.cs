@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class FadeOut : MonoBehaviour
 {
     // Start is called before the first frame update
-    private float duration = 5f;
+    private float duration = 3f;
     [SerializeField] TextMeshProUGUI text;
     void Start()
     {
@@ -33,7 +33,7 @@ public class FadeOut : MonoBehaviour
         {
             text.fontMaterial.SetColor("_FaceColor", Color.Lerp(Color.white, Color.black, outTime));
             yield return null;
-            outTime += Time.deltaTime / duration;
+            outTime += Time.deltaTime / (duration-1);
            // print(outTime);
         }
         if (outTime >= 1)
