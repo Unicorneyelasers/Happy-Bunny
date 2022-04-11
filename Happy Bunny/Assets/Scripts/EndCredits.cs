@@ -5,26 +5,31 @@ using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.SceneManagement;
 
 
-public class TitleScreen : MonoBehaviour
+public class EndCredits : MonoBehaviour
 {
+    [SerializeField] Animator anim;
     [SerializeField] Light2D globalLight;
     [SerializeField] Light2D bunLight;
-    [SerializeField] AudioSource music;
-    private float duration = 2f;
-    public void OnStartButton()
+    private float duration = 1f;
+    // Start is called before the first frame update
+    void Start()
     {
-       // Messenger.Broadcast(GameEvent.START);
-        Debug.Log("Start pushed. In TitleScreen");
-        StartCoroutine(Fadeinstart());
+        
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        if(anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
+        {
+            StartCoroutine(Fadeinstart());
+        }
+    }
     IEnumerator Fadeinstart()
     {
         float outTime = 0;
         while (outTime < 1)
         {
-            music.volume = Mathf.Lerp(music.volume, 0, outTime);
-            print(music.volume);
             globalLight.intensity = Mathf.Lerp(globalLight.intensity, 0, outTime);
             //  tunnelLight.intensity = Mathf.Lerp(tunnelLight.intensity, 0, outTime);
             bunLight.intensity = Mathf.Lerp(bunLight.intensity, 0, outTime);
@@ -34,7 +39,7 @@ public class TitleScreen : MonoBehaviour
         }
         if (outTime >= 1)
         {
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(0);
         }
     }
 }

@@ -20,6 +20,8 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             exitGamePopUp.Open();
         }
     }

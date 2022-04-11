@@ -23,6 +23,7 @@ public class GameController : MonoBehaviour
         Messenger.AddListener(GameEvent.PLAYER_DEATH, OnPlayerDeath);
         Messenger.AddListener(GameEvent.ENDING_REACHED, OnEndingReached);
         Messenger.AddListener(GameEvent.START, OnStart);
+        Messenger.AddListener(GameEvent.CREDITS_OVER, OnCreditsOver);
        
     }
 
@@ -31,8 +32,12 @@ public class GameController : MonoBehaviour
         Messenger.RemoveListener(GameEvent.PLAYER_DEATH, OnPlayerDeath);
         Messenger.RemoveListener(GameEvent.ENDING_REACHED, OnEndingReached);
         Messenger.RemoveListener(GameEvent.START, OnStart);
+        Messenger.RemoveListener(GameEvent.CREDITS_OVER, OnCreditsOver);
     }
+    void OnCreditsOver()
+    {
 
+    }
     void OnStart()
     {
         Debug.Log("Start pushed");
@@ -85,7 +90,7 @@ public class GameController : MonoBehaviour
         ui.ShowGameOverPopUp();
         PauseGamePlay();
     }
-   void PauseGamePlay()
+   public void PauseGamePlay()
     {
         Time.timeScale = 0;
         Cursor.lockState = CursorLockMode.Locked;

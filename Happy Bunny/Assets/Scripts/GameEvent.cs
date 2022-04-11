@@ -9,6 +9,7 @@ using UnityEngine;
         public static string PLAYER_DEATH = "PLAYER_DEATH";
         public static string ENDING_REACHED = "ENDING_RACHED";
         public static string START = "START";
+        public static string CREDITS_OVER = "CREDITS_OVER";
     }
 
 
