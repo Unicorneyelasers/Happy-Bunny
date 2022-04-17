@@ -17,7 +17,7 @@ public class PlayerContoller : MonoBehaviour
     [SerializeField] private Transform groundCheckPoint;
     [SerializeField] private LayerMask groundLayerMask;
     private float groundCheckRadius = 0.03f;
-   [SerializeField] private Canvas gameOver;
+    [SerializeField] private Canvas gameOver;
     private bool isAlive = true;
     private bool facingLeft = false;
     private Vector3 respawnPt; 
@@ -44,8 +44,13 @@ public class PlayerContoller : MonoBehaviour
     }
     void Die()
     {
-        isAlive = false;
-        Messenger.Broadcast(GameEvent.PLAYER_DEATH);
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("player_death") && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)// && anim.IsInTransition(0))
+        {
+            isAlive = false;
+            Debug.Log("death animation should be comeplete");
+            Messenger.Broadcast(GameEvent.PLAYER_DEATH);
+        }
+       
     }
     // Update is called once per frame
     void Update()
@@ -66,7 +71,7 @@ public class PlayerContoller : MonoBehaviour
             anim.SetBool("isRunning", isRunning);
             isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayerMask) && rbody.velocity.y < 0.01;
             anim.SetBool("isGrounded", isGrounded);
-            if ((!hasLight) && anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && isGrounded && isAlive)
+            if ((!hasLight) && isGrounded && isAlive)
             {
 
 

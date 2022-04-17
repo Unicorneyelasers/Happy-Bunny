@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class ExitGamePopUp : BasePopUp
 {
@@ -14,5 +16,9 @@ public class ExitGamePopUp : BasePopUp
     public void OnReturnToGAme()
     {
         Close();
+    }
+    public void OnReloadLevel()
+    {
+        SceneManager.LoadScene(2);
     }
 }

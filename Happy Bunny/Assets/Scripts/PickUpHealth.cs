@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PickUpHealth : MonoBehaviour
 {
+  // [SerializeField] AudioSource source;
+   [SerializeField] AudioClip clip;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +27,11 @@ public class PickUpHealth : MonoBehaviour
             if (player.maxLight < 1)
             {
                 player.IncreasePlayerLight();
+                //source.PlayOneShot(clip);
+                // source.Play();
+                AudioSource.PlayClipAtPoint(clip, transform.position);
+                //Debug.Log("at least we are in the sound thing");
+               // Destroy(this.source);
                 Destroy(this.gameObject);
                 
             }

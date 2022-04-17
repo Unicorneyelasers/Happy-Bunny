@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 public class FadeOut : MonoBehaviour
 {
-    // Start is called before the first frame update
+    //Fade Out is the class that fades the starting text. There has to be a better way. 
     private float duration = 3f;
     [SerializeField] TextMeshProUGUI text;
     void Start()
