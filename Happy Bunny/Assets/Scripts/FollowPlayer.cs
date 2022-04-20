@@ -37,18 +37,7 @@ public class FollowPlayer : MonoBehaviour
                     Flip();
                 }
             }
-        void OnTriggerEnter2D(Collider2D collision)
-        {
-            Debug.Log(this.gameObject + ".TriggerEnter2D() collided with " + collision.gameObject.name);
-            if (collision.gameObject.name == "Player")
-            {
-                PlayerContoller player = collision.gameObject.GetComponent<PlayerContoller>();
-
-                player.DimPlayerLight();
-
-
-            }
-        }
+      
             //else if( distanceapart > 0)
             //{
             //    if(distanceapart >= attackRangePos)
@@ -73,5 +62,16 @@ public class FollowPlayer : MonoBehaviour
             //transform.LookAt(target);
             // Debug.Log("Player: " + target.position);
         }
-    
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log(this.gameObject + ".TriggerEnter2D() collided with " + collision.gameObject.name);
+        if (collision.gameObject.name == "Player")
+        {
+            PlayerContoller player = collision.gameObject.GetComponent<PlayerContoller>();
+
+            player.DimPlayerLight();
+
+
+        }
+    }
 }
