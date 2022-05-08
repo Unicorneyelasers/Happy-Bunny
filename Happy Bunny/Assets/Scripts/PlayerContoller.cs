@@ -36,6 +36,7 @@ public class PlayerContoller : MonoBehaviour
         initialJumpVelocity = Mathf.Sqrt(jumpHeight * -2 * gravity);
         respawnPt = transform.position;
         bunLight.intensity = maxLight;
+        isGrounded = true;
     }
     void Jump()
     {
@@ -57,19 +58,21 @@ public class PlayerContoller : MonoBehaviour
     {
         if (isAlive)
         {
-
+            //Debug.Log("bun is alive");
+            isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayerMask) && rbody.velocity.y < 0.01;
             if (Input.GetButtonDown("Jump") && isGrounded)
             {
+                Debug.Log("jump");
                 Jump();
             }
 
             bool hasLight = (maxLight > 0);
             anim.SetBool("hasLight", hasLight);
-            isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayerMask) && rbody.velocity.y < 0.01;
+            //isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayerMask) && rbody.velocity.y < 0.01;
             horizInput = Input.GetAxis("Horizontal");
             bool isRunning = horizInput > 0.01 || horizInput < -0.01;
             anim.SetBool("isRunning", isRunning);
-            isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayerMask) && rbody.velocity.y < 0.01;
+           // isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayerMask) && rbody.velocity.y < 0.01;
             anim.SetBool("isGrounded", isGrounded);
             if ((!hasLight) && isGrounded && isAlive)
             {

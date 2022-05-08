@@ -14,7 +14,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject huggyPrefab;
     [SerializeField] private GameObject chucklesPrefab;
     private GameObject huggy;
-    private GameObject chuckles;
+   
     [SerializeField] UIManager ui;
     [SerializeField] Light2D globalLight;
     [SerializeField] Light2D bunLight;
@@ -131,9 +131,10 @@ public class GameController : MonoBehaviour
             huggy.transform.position = new Vector2(Random.Range(0, 15), Random.Range(0, 15));
         } 
         bundleOfChuckles = new GameObject[numOfChuckles];
+         GameObject chuckles;
         for(int i = 0; i < numOfChuckles; i++)
         {
-            huggy = Instantiate(chucklesPrefab) as GameObject;
+            chuckles = Instantiate(chucklesPrefab) as GameObject;
             bundleOfChuckles[i] = chuckles;
             //float randomAngle = Random.Range(0f, 6.28319f);
             chuckles.transform.position = new Vector2(Random.Range(0, 15), Random.Range(0, 15));
